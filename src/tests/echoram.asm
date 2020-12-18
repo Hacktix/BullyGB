@@ -40,10 +40,11 @@ TestEchoRAM::
     ret
 .endReadEchoRAM
 
+    ; Clear DE and return - test passed
     ld de, $0000
     ret
 
 strEchoRAMTestRead: db "Echo RAM Read Test", 0
 strEchoRAMTestWrite: db "Echo RAM Write Test", 0
-strEchoRAMFailRead: db "Invalid Echo RAM Reads", 0
-strEchoRAMFailWrite: db "Invalid Echo RAM Writes", 0
+strEchoRAMFailRead: db "Bad Echo RAM Reads", 0
+strEchoRAMFailWrite: db "Bad Echo RAM Writes", 0
