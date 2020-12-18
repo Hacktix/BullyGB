@@ -22,11 +22,9 @@
 ; be displayed as an error message.
 ;------------------------------------------------------------------------
 
-INCLUDE "src/tests/example.asm"
 INCLUDE "src/tests/echoram.asm"
 
 SECTION "Test Routine Pointers", ROM0
 TestRoutines::
-    dw ExampleTest
     dw TestEchoRAM
     db 0
