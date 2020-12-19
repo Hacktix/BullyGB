@@ -23,8 +23,10 @@
 ;------------------------------------------------------------------------
 
 INCLUDE "src/tests/echoram.asm"
+INCLUDE "src/tests/bootreg.asm"
 
 SECTION "Test Routine Pointers", ROM0
 TestRoutines::
     dw TestEchoRAM
+    dw BootregTest
     db 0
