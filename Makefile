@@ -8,7 +8,7 @@ RGBFIX = rgbfix
 RM_F = rm -f
 
 ASFLAGS = -h
-LDFLAGS = -t -w -n bully.sym
+LDFLAGS = -t -w -n bully.sym -t
 FIXFLAGS = -v -p $(PADVAL) -t $(NAME)
 
 bully.gb: bully.o
