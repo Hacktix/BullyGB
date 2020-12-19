@@ -28,11 +28,11 @@ Memcpy::
 ;------------------------------------------------------------------------
 Strcpy::
     ld a, [de]
-    and a
-    ret z
-    ld [hli], a
     inc de
-    jr Strcpy
+    ld [hli], a
+    and a
+    jr nz, Strcpy
+    ret
 
 ;------------------------------------------------------------------------
 ; Helper routine used to call a routine at memory address HL.
