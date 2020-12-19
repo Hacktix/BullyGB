@@ -33,7 +33,7 @@ InitTests::
     ld [rLCDC], a
 
     ; Load font tiles
-    ld hl, $9000
+    ld hl, $9210
     ld de, FontTiles
     ld bc, FontTilesEnd - FontTiles
     call Memcpy
