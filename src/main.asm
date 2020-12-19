@@ -1,9 +1,18 @@
 INCLUDE "inc/hardware.inc"
 INCLUDE "src/functions.asm"
+INCLUDE "src/ram.asm"
 INCLUDE "src/io.asm"
 INCLUDE "src/tests.asm"
 
 SECTION "Vectors", ROM0[$0]
+    ds $38 - @
+
+;------------------------------------------------------------------------
+; General purpose crash handler vector for instruction $FF.
+;------------------------------------------------------------------------
+CrashHandlerVector::
+    jp CrashHandler
+
     ds $100 - @
 
 SECTION "Test", ROM0[$100]
@@ -71,6 +80,28 @@ RunTests::
     call PrintString
 
     ; Enable LCD
+    ld a, LCDCF_ON | LCDCF_BGON
+    ld [rLCDC], a
+    jr @
+
+;------------------------------------------------------------------------
+; Jumped to from the $38 reset vector (most commonly associated with)
+; inaccuracy-related crashes. Fetches a string pointer from HRAM,
+; prints it to the screen and locks up.
+;------------------------------------------------------------------------
+CrashHandler::
+    ; Reset SP in case of stack overflow
+    ld sp, _RAM+$1000
+
+    ; Fetch pointer from HRAM and print
+    ld hl, hCrashError
+    ld a, [hli]
+    ld e, a
+    ld a, [hl]
+    ld d, a
+    call PrintString
+
+    ; Enable LCD and lock up
     ld a, LCDCF_ON | LCDCF_BGON
     ld [rLCDC], a
     jr @

@@ -1,3 +1,4 @@
+SECTION "IO Functions", ROM0
 ;------------------------------------------------------------------------
 ; Prints a given string to the screen.
 ; Parameters:

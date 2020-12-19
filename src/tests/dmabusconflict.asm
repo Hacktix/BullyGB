@@ -1,5 +1,12 @@
 SECTION "OAM DMA Bus Conflict Test", ROMX
 TestDMABusConflict::
+    ; Pre-load crash error into HRAM
+    ld hl, hCrashError
+    ld a, LOW(strConflictCrash)
+    ld [hli], a
+    ld a, HIGH(strConflictCrash)
+    ld [hl], a
+
     ; Initiate OAM DMA
     ld a, HIGH(DMATransferData)
     ldh [rDMA], a
@@ -13,9 +20,10 @@ TestDMABusConflict::
     ret
 
 strNoConflicts: db "No DMA conflicts", 0
+strConflictCrash: db "DMA bus conflict  always reads $FF", 0
 
-    ; 160 bytes DMA - 8 bytes wait loop - 17 bytes string
-    REPT 160 - 8 - 17
+    ; 160 bytes DMA - 8 bytes wait loop - error message string bytes (+ space for terminating zero byte)
+    REPT 160 - 8 - STRLEN("No DMA conflicts ") - STRLEN("DMA bus conflict  always reads $FF ")
     nop 
     ENDR
 
