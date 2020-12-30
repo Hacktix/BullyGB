@@ -80,10 +80,41 @@ RunTests::
     ld hl, TestRoutines
 
 .testIterateLoop
+    ; Load compatibility header length
+    ld a, [hli]
+    and a
+    jr z, .skipCompatibilityCheck ; Run test regardless of model if value is zero
+
+    ; Check if model is compatible
+.compatibilityCheckLoop
+    ld b, a
+    xor a
+    ld c, a
+    ld a, [hli]
+    ld d, a
+    ldh a, [hDeviceModel]
+    cp d
+    jr nz, .notCompatible
+    inc c                         ; Increment C to $01 if compatible
+.notCompatible
+    dec b
+    jr nz, .compatibilityCheckLoop
+
+    ; Run test if compatible
+    xor a
+    or c
+    jr nz, .skipCompatibilityCheck
+
+    ; Skip test otherwise
+    inc hl
+    inc hl
+    jr .testIterateLoop
+
+.skipCompatibilityCheck
     ; Load DE with test routine pointer
     ld a, [hl]
-    and a
-    jr z, .breakTestLoop          ; Exit loop when zero byte is read
+    cp $ff
+    jr z, .breakTestLoop          ; Exit loop when $FF byte is read
     ld a, [hli]
     ld e, a
     ld a, [hli]
