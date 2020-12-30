@@ -25,10 +25,43 @@ SECTION "Test", ROM0[$100]
 ; to the test running routine.
 ;------------------------------------------------------------------------
 InitTests::
+    cp $01
+    jr nz, .notDMGorSGB ; Check if A = $01 (DMG or SGB)
+    ld a, h
+    cp $01
+    jr z, .isDMG        ; Check if H = $01 (DMG)
+    ld a, $04           ; Otherwise SGB
+    jr .endModelCheck
+.isDMG
+    ld a, $01
+    jr .endModelCheck
+.notDMGorSGB
+    cp $ff
+    jr nz, .notMGBorSGB ; Check if A = $FF (MGB or SGB)
+    ld a, c
+    cp $13
+    jr z, .isMGB        ; Check if C = $13 (MGB)
+    ld a, $04           ; Otherwise SGB
+    jr .endModelCheck
+.isMGB
+    ld a, $02
+    jr .endModelCheck
+.notMGBorSGB
+    ld a, b
+    and a
+    jr z, .isCGB        ; Check if B = $00 (CGB)
+    ld a, $05           ; Otherwise AGB/AGS
+    jr .endModelCheck
+.isCGB
+    ld a, $03
+.endModelCheck
+    ldh [hDeviceModel], a
+
+.initWaitLCD
     ; Wait for VBlank, disable LCD
 	ldh a, [rLY]
 	cp SCRN_Y
-	jr c, InitTests
+	jr c, .initWaitLCD
     xor a
     ld [rLCDC], a
 
