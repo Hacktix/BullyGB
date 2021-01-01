@@ -82,6 +82,8 @@ RunTests::
 .testIterateLoop
     ; Load compatibility header length
     ld a, [hli]
+    cp $ff
+    jr z, .breakTestLoop          ; Break if header $ff found
     and a
     jr z, .skipCompatibilityCheck ; Run test regardless of model if value is zero
 
