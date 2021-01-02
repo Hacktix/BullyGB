@@ -67,7 +67,10 @@ strIncorrectDE: db "POP ignores DMA   conflict", 0
     ld de, strIncorrectC
     ret
 .validRegC
+    ld a, [hDeviceModel]
+    cp $03                         ; Set carry if DMG or MGB
     ld a, d
+    jr nc, .checkDE_CGB
     cp $13
     jr z, .validRegD               ; Invalid value due to popping off RAM instead of DMA conflict values
     ld de, strIncorrectDE
@@ -77,6 +80,17 @@ strIncorrectDE: db "POP ignores DMA   conflict", 0
     cp $37
     jr z, .validRegE               ; Invalid value due to popping off RAM instead of DMA conflict values
     ld de, strIncorrectDE
+    ret
+.checkDE_CGB                       ; # CGB behaves differently with this
+    cp $02
+    jr z, .validRegD_CGB           ; Invalid value due to not popping off RAM 
+    ld de, strIncorrectDE_CGB
+    ret
+.validRegD_CGB
+    ld a, e
+    cp $00
+    jr z, .validRegE               ; Invalid value due to not popping off RAM
+    ld de, strIncorrectDE_CGB
     ret
 .validRegE
     ld hl, hCrashError
@@ -93,7 +107,10 @@ strIncorrectDE: db "POP ignores DMA   conflict", 0
     ret
 .validhCrashErrorHi
     ld hl, $CFFD
+    ld a, [hDeviceModel]
+    cp $03                         ; Set carry if DMG or MGB
     ld a, [hld]
+    jr nc, .checkRamCGB
     cp $ff
     jr z, .validRamHi              ; Invalid value due to RAM writes not being blocked
     ld de, strIncorrectRAM
@@ -104,6 +121,17 @@ strIncorrectDE: db "POP ignores DMA   conflict", 0
     jr z, .validRamLo              ; Invalid value due to RAM writes not being blocked
     ld de, strIncorrectRAM
     ret
+.checkRamCGB                       ; # CGB also behaves differently with this
+    cp $02
+    jr z, .validRamHiCGB           ; Invalid value due to RAM writes being blocked
+    ld de, strIncorrectRAM_CGB
+    ret
+.validRamHiCGB
+    ld a, [hl]
+    cp $00
+    jr z, .validRamLo              ; Invalid value due to RAM writes being blocked
+    ld de, strIncorrectRAM_CGB
+    ret
 .validRamLo
 
     ; Clear DE and return - test passed
@@ -111,8 +139,10 @@ strIncorrectDE: db "POP ignores DMA   conflict", 0
     ret
 
 ; Remaining error messages that didn't fit into 160 OAM DMA bytes
+strIncorrectDE_CGB: db "DMA blocks POP    from RAM", 0
 strIncorrectHRAM: db "DMA blocks HRAM   writes", 0
 strIncorrectRAM: db "DMA allows RAM    writes", 0
+strIncorrectRAM_CGB: db "DMA blocks RAM    writes", 0
 
 SECTION "OAM DMA Bus Conflict Test Routine", ROMX, ALIGN[8]
 DMATransferData::
