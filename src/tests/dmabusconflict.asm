@@ -68,7 +68,7 @@ strIncorrectDE: db "POP ignores DMA   conflict", 0
     ret
 .validRegC
     ld a, [hDeviceModel]
-    cp $03                         ; Set carry if DMG or MGB
+    cp $04                         ; Set carry if DMG, SGB or MGB
     ld a, d
     jr nc, .checkDE_CGB
     cp $13
@@ -108,7 +108,7 @@ strIncorrectDE: db "POP ignores DMA   conflict", 0
 .validhCrashErrorHi
     ld hl, $CFFD
     ld a, [hDeviceModel]
-    cp $03                         ; Set carry if DMG or MGB
+    cp $04                         ; Set carry if DMG, SGB or MGB
     ld a, [hld]
     jr nc, .checkRamCGB
     cp $ff

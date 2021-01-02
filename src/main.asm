@@ -30,7 +30,7 @@ InitTests::
     ld a, h
     cp $01
     jr z, .isDMG        ; Check if H = $01 (DMG)
-    ld a, $04           ; Otherwise SGB
+    ld a, $03           ; Otherwise SGB
     jr .endModelCheck
 .isDMG
     ld a, $01
@@ -41,7 +41,7 @@ InitTests::
     ld a, c
     cp $13
     jr z, .isMGB        ; Check if C = $13 (MGB)
-    ld a, $04           ; Otherwise SGB
+    ld a, $03           ; Otherwise SGB
     jr .endModelCheck
 .isMGB
     ld a, $02
@@ -53,7 +53,7 @@ InitTests::
     ld a, $05           ; Otherwise AGB/AGS
     jr .endModelCheck
 .isCGB
-    ld a, $03
+    ld a, $04
 .endModelCheck
     ldh [hDeviceModel], a
 
