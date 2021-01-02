@@ -65,12 +65,6 @@ InitTests::
     xor a
     ld [rLCDC], a
 
-    ; Load font tiles
-    ld hl, $9210
-    ld de, FontTiles
-    ld bc, FontTilesEnd - FontTiles
-    call Memcpy
-
 ;------------------------------------------------------------------------
 ; Iterates over the given list of tests and locks up once all
 ; tests finish or one fails.
@@ -88,8 +82,8 @@ RunTests::
     jr z, .skipCompatibilityCheck ; Run test regardless of model if value is zero
 
     ; Check if model is compatible
-.compatibilityCheckLoop
     ld b, a
+.compatibilityCheckLoop
     xor a
     ld c, a
     ld a, [hli]
@@ -134,6 +128,12 @@ RunTests::
     or d
     jr z, .testIterateLoop
 
+    ; Load font tiles
+    ld hl, $9210
+    ld de, FontTiles
+    ld bc, FontTilesEnd - FontTiles
+    call Memcpy
+
     ; Print string, enable LCD and lock up
     call PrintString
     ld a, LCDCF_ON | LCDCF_BGON
@@ -141,6 +141,12 @@ RunTests::
     jr @
 
 .breakTestLoop
+    ; Load font tiles
+    ld hl, $9210
+    ld de, FontTiles
+    ld bc, FontTilesEnd - FontTiles
+    call Memcpy
+
     ; Print "All tests OK!"
     ld de, strAllPassed
     call PrintString
@@ -158,6 +164,12 @@ RunTests::
 CrashHandler::
     ; Reset SP in case of stack overflow
     ld sp, _RAM+$1000
+    
+    ; Load font tiles
+    ld hl, $9210
+    ld de, FontTiles
+    ld bc, FontTilesEnd - FontTiles
+    call Memcpy
 
     ; Fetch pointer from HRAM and print
     ld hl, hCrashError
