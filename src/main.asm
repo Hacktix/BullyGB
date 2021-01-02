@@ -83,9 +83,9 @@ RunTests::
 
     ; Check if model is compatible
     ld b, a
-.compatibilityCheckLoop
     xor a
     ld c, a
+.compatibilityCheckLoop
     ld a, [hli]
     ld d, a
     ldh a, [hDeviceModel]
@@ -128,14 +128,16 @@ RunTests::
     or d
     jr z, .testIterateLoop
 
+    ; Print string
+    call PrintString
+
     ; Load font tiles
     ld hl, $9210
     ld de, FontTiles
     ld bc, FontTilesEnd - FontTiles
     call Memcpy
 
-    ; Print string, enable LCD and lock up
-    call PrintString
+    ; Enable LCD and lock up
     ld a, LCDCF_ON | LCDCF_BGON
     ld [rLCDC], a
     jr @
