@@ -82,13 +82,13 @@ strIncorrectDE: db "POP ignores DMA   conflict", 0
     ld de, strIncorrectDE
     ret
 .checkDE_CGB                       ; # CGB behaves differently with this
-    cp $02
+    cp HIGH(DMATransferData)
     jr z, .validRegD_CGB           ; Invalid value due to not popping off RAM 
     ld de, strIncorrectDE_CGB
     ret
 .validRegD_CGB
     ld a, e
-    cp $00
+    cp LOW(DMATransferData)
     jr z, .validRegE               ; Invalid value due to not popping off RAM
     ld de, strIncorrectDE_CGB
     ret
@@ -122,13 +122,13 @@ strIncorrectDE: db "POP ignores DMA   conflict", 0
     ld de, strIncorrectRAM
     ret
 .checkRamCGB                       ; # CGB also behaves differently with this
-    cp $02
+    cp HIGH(DMATransferData)
     jr z, .validRamHiCGB           ; Invalid value due to RAM writes being blocked
     ld de, strIncorrectRAM_CGB
     ret
 .validRamHiCGB
     ld a, [hl]
-    cp $00
+    cp LOW(DMATransferData)
     jr z, .validRamLo              ; Invalid value due to RAM writes being blocked
     ld de, strIncorrectRAM_CGB
     ret
