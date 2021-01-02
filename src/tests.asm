@@ -16,8 +16,8 @@
 ; are valid:
 ;   $01 - DMG
 ;   $02 - MGB
-;   $03 - CGB
-;   $04 - SGB
+;   $03 - SGB
+;   $04 - CGB
 ;   $05 - AGB/AGS
 ; Leaving the "model_count" value at zero will mark the test as
 ; compatible with all models.
@@ -40,9 +40,14 @@
 INCLUDE "src/tests/echoram.asm"
 INCLUDE "src/tests/bootreg.asm"
 INCLUDE "src/tests/dmabusconflict.asm"
+INCLUDE "src/tests/initvram_dmg.asm"
 
 SECTION "Test Routine Pointers", ROM0
 TestRoutines::
+    ; Checks the initial state of VRAM
+    db 2, $01, $02
+    dw InitVRAMTest
+
     ; Tests writing to Echo RAM and reading from Normal RAM and vice versa
     db 0
     dw TestEchoRAM

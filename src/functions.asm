@@ -6,7 +6,7 @@ SECTION "Functions", ROM0
 ;  * HL - Base Pointer to destination memory region
 ;  * BC - Amount of bytes to copy
 ;
-; Destroys: A, F, B, C, D, E
+; Destroys: All Registers
 ;------------------------------------------------------------------------
 Memcpy::
     ld a, [de]
@@ -32,6 +32,33 @@ Strcpy::
     ld [hli], a
     and a
     jr nz, Strcpy
+    ret
+
+;------------------------------------------------------------------------
+; Compares BC bytes starting at HL to the memory region starting at
+; DE. Sets zero flag if equal, unsets it otherwise.
+; Parameters:
+;  * BC - Size of memory region to compare
+;  * DE - Base pointer to first memory region
+;  * HL - Base pointer to second memory region
+;
+; Destroys: All Registers
+;------------------------------------------------------------------------
+Memcmp::
+    ld a, [de]
+    inc de
+    cp [hl]
+    inc hl
+    jr nz, .notEqual
+    dec bc
+    ld a, b
+    or c
+    jr nz, Memcmp
+    xor a
+    ret
+.notEqual
+    xor a
+    inc a
     ret
 
 ;------------------------------------------------------------------------
