@@ -41,9 +41,16 @@ INCLUDE "src/tests/echoram.asm"
 INCLUDE "src/tests/bootreg.asm"
 INCLUDE "src/tests/dmabusconflict.asm"
 INCLUDE "src/tests/initvram_dmg.asm"
+INCLUDE "src/tests/divtest.asm"
 
 SECTION "Test Routine Pointers", ROM0
 TestRoutines::
+    ; Tests the initial state of the DIV register
+    ; TODO: Check DIV resets by writing
+    ; TODO: Check "Obscure Timer Behavior"
+    db 0
+    dw TestDIV
+
     ; Checks the initial state of VRAM
     db 2, $01, $02
     dw InitVRAMTest
