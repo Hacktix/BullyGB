@@ -9,7 +9,7 @@ RM_F = rm -f
 
 ASFLAGS = -h
 LDFLAGS = -t -w -n bully.sym -t
-FIXFLAGS = -v -p $(PADVAL) -t $(NAME)
+FIXFLAGS = -v -c -p $(PADVAL) -t $(NAME)
 
 bully.gb: bully.o
 	$(RGBLINK) $(LDFLAGS) -o $@ $^

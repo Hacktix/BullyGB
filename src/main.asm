@@ -137,6 +137,13 @@ RunTests::
     ld bc, FontTilesEnd - FontTiles
     call Memcpy
 
+    ; Initialize CGB Palettes
+    ld a, BCPSF_AUTOINC | 6
+    ldh [rBCPS], a
+    xor a
+    ldh [rBCPD], a
+    ldh [rBCPD], a
+
     ; Enable LCD and lock up
     ld a, LCDCF_ON | LCDCF_BGON
     ld [rLCDC], a
@@ -148,6 +155,13 @@ RunTests::
     ld de, FontTiles
     ld bc, FontTilesEnd - FontTiles
     call Memcpy
+
+    ; Initialize CGB Palettes
+    ld a, BCPSF_AUTOINC | 6
+    ldh [rBCPS], a
+    xor a
+    ldh [rBCPD], a
+    ldh [rBCPD], a
 
     ; Print "All tests OK!"
     ld de, strAllPassed
@@ -172,6 +186,13 @@ CrashHandler::
     ld de, FontTiles
     ld bc, FontTilesEnd - FontTiles
     call Memcpy
+
+    ; Initialize CGB Palettes
+    ld a, BCPSF_AUTOINC | 6
+    ldh [rBCPS], a
+    xor a
+    ldh [rBCPD], a
+    ldh [rBCPD], a
 
     ; Fetch pointer from HRAM and print
     ld hl, hCrashError
