@@ -42,6 +42,7 @@ INCLUDE "src/tests/bootreg.asm"
 INCLUDE "src/tests/dmabusconflict.asm"
 INCLUDE "src/tests/initvram_dmg.asm"
 INCLUDE "src/tests/divtest.asm"
+INCLUDE "src/tests/undoc_regs.asm"
 
 SECTION "Test Routine Pointers", ROM0
 TestRoutines::
@@ -50,6 +51,10 @@ TestRoutines::
     ; TODO: Check "Obscure Timer Behavior"
     db 0
     dw TestDIV
+    
+    ; Tests the behavior of undocumented registers at $FF72-$FF75
+    db 2, $04, $05
+    dw UndocumentedRegistersTest
 
     ; Checks the initial state of VRAM
     db 2, $01, $02
