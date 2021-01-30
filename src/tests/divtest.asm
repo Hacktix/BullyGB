@@ -9,18 +9,13 @@ TestDIV::
     cp $03
     jr z, .modeSGB
     jr c, .modeDMG
-    cp $04
-    jr z, .modeCGB
-    ld a, $29           ; Expected value for AGB and AGS (TODO: Confirm)
-    jr .endLoadCP
-.modeCGB
-    ld a, $29           ; Expected value for CGB (TODO: Confirm CGB-0)
+    ld a, $1F           ; Expected value for CGB, AGS and AGB (TODO: Confirm)
     jr .endLoadCP
 .modeSGB
-    ld a, $DA           ; Expected value for SGB and SGB2 (TODO: Confirm)
+    ld a, $D9           ; Expected value for SGB and SGB2 (TODO: Confirm)
     jr .endLoadCP
 .modeDMG
-    ld a, $AE           ; Expected value for DMG and MGB (TODO: Confirm DMG-0)
+    ld a, $AD           ; Expected value for DMG and MGB (TODO: Confirm DMG-0)
 .endLoadCP
 
     ; Compare values
