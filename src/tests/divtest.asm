@@ -8,14 +8,19 @@ TestDIV::
     ldh a, [hDeviceModel]
     cp $03
     jr z, .modeSGB
-    jr nc, .modeDMG
-    ld a, $AD           ; Expected value for CGB and AGB/AGS (TODO: Confirm AGB/AGS and CGB-0)
+    jr c, .modeDMG
+    cp $04
+    jr z, .modeCGB
+    ld a, $29           ; Expected value for AGB and AGS (TODO: Confirm)
+    jr .endLoadCP
+.modeCGB
+    ld a, $29           ; Expected value for CGB (TODO: Confirm CGB-0)
     jr .endLoadCP
 .modeSGB
     ld a, $DA           ; Expected value for SGB and SGB2 (TODO: Confirm)
     jr .endLoadCP
 .modeDMG
-    ld a, $27           ; Expected value for DMG and MGB (TODO: Confirm DMG-0)
+    ld a, $AE           ; Expected value for DMG and MGB (TODO: Confirm DMG-0)
 .endLoadCP
 
     ; Compare values
