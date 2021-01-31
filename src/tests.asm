@@ -44,6 +44,7 @@ INCLUDE "src/tests/initvram_dmg.asm"
 INCLUDE "src/tests/divtest.asm"
 INCLUDE "src/tests/undoc_regs.asm"
 INCLUDE "src/tests/initram.asm"
+INCLUDE "src/tests/unused_io.asm"
 
 SECTION "Test Routine Pointers", ROM0
 TestRoutines::
@@ -52,6 +53,9 @@ TestRoutines::
     ; TODO: Check "Obscure Timer Behavior"
     db 0
     dw TestDIV
+
+    db 0
+    dw UnusedIOTest
 
     ; Runs a basic checksum over the first 256 bytes of RAM to check if it's all $00 or $FF
     db 0
