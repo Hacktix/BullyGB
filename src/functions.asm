@@ -66,3 +66,39 @@ Memcmp::
 ;------------------------------------------------------------------------
 _hl_::
 	jp hl
+
+;------------------------------------------------------------------------
+; Converts the value in A into two ASCII encoded hex characters and
+; stores them in DE.
+; Parameters:
+;  * A - Value to be converted
+;
+; Destroys: A, F, D, E
+;------------------------------------------------------------------------
+ConvertToASCII::
+    push af
+    call ConvertNibbleToASCII
+    ld e, a
+    pop af
+    swap a
+    call ConvertNibbleToASCII
+    ld d, a
+    ret
+
+;------------------------------------------------------------------------
+; Converts the lower nibble of A to an ASCII encoded hex character
+; and stores it in A.
+; Parameters:
+;  * A - Value to be converted
+;
+; Destroys: A, F
+;------------------------------------------------------------------------
+ConvertNibbleToASCII::
+    and $0F
+    cp 10
+    jr nc, .letterCharacter
+    add "0"
+    ret
+.letterCharacter
+    add "A"
+    ret
