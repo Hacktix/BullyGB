@@ -43,6 +43,7 @@ INCLUDE "src/tests/dmabusconflict.asm"
 INCLUDE "src/tests/initvram_dmg.asm"
 INCLUDE "src/tests/divtest.asm"
 INCLUDE "src/tests/undoc_regs.asm"
+INCLUDE "src/tests/initram.asm"
 
 SECTION "Test Routine Pointers", ROM0
 TestRoutines::
@@ -51,6 +52,10 @@ TestRoutines::
     ; TODO: Check "Obscure Timer Behavior"
     db 0
     dw TestDIV
+
+    ; Runs a basic checksum over the first 256 bytes of RAM to check if it's all $00 or $FF
+    db 0
+    dw InitRAMTest
     
     ; Tests the behavior of undocumented registers at $FF72-$FF75
     db 2, $04, $05
