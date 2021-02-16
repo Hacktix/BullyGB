@@ -14,7 +14,6 @@ UnusedIOTest::
 .endCheckLoop
 
     ; Check if running on DMG, skip next checks otherwise
-    ld b, b
     ld a, [hDeviceModel]
     cp $03
     jr c, .runTestsDMG
