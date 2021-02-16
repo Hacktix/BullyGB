@@ -17,6 +17,9 @@ PrintString::
     and a
     ret z
 
+    ; Print character to serial
+    ldh [rSB], a
+
     ; Load into VRAM and check for line wrapping
     ld [hli], a
     ld a, l
