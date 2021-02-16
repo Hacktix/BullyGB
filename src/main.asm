@@ -144,6 +144,10 @@ RunTests::
     ldh [rBCPD], a
     ldh [rBCPD], a
 
+    ; Initialize DMG Palettes
+    ld a, %11100100
+    ldh [rBGP], a
+
     ; Enable LCD and lock up
     ld a, LCDCF_ON | LCDCF_BGON
     ld [rLCDC], a
@@ -162,6 +166,10 @@ RunTests::
     xor a
     ldh [rBCPD], a
     ldh [rBCPD], a
+
+    ; Initialize DMG Palettes
+    ld a, %11100100
+    ldh [rBGP], a
 
     ; Print "All tests OK!"
     ld de, strAllPassed
@@ -193,6 +201,10 @@ CrashHandler::
     xor a
     ldh [rBCPD], a
     ldh [rBCPD], a
+
+    ; Initialize DMG Palettes
+    ld a, %11100100
+    ldh [rBGP], a
 
     ; Fetch pointer from HRAM and print
     ld hl, hCrashError
