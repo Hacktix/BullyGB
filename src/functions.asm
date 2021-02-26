@@ -100,5 +100,5 @@ ConvertNibbleToASCII::
     add "0"
     ret
 .letterCharacter
-    add "A"
+    add ("A"-10)
     ret
